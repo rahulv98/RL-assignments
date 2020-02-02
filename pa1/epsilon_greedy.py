@@ -1,9 +1,7 @@
 import numpy as np
-from matplotlib import pyplot as plt
 
-def epsilon_greedy(epsilon, arms, time_steps, runs):
+def epsilon_greedy(epsilon, arms, time_steps, runs, trueQ):
 
-    trueQ = np.random.normal(0, 1, (runs, arms))
     opt_arm = np.argmax(trueQ, axis = 1)
 
     estQ = np.zeros((runs, arms))
