@@ -32,4 +32,4 @@ def epsilon_greedy(epsilon, arms, time_steps, runs, trueQ):
 
             estQ[run_id][arm] += (reward - estQ[run_id][arm])/(picks_count[run_id][arm]) 
 
-    return R_avg, opt_count
+    return R_avg, ((opt_count * 100) / runs)
