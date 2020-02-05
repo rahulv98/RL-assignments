@@ -16,10 +16,10 @@ def plot_softmax(temperatures, arms, time_steps, runs, trueQ):
         fig2.plot(range(time_steps), opt_percent, colors[i], label = "temperature = " + str(temperature))
 
 
-    fig1.legend(loc="lower right")
-    fig2.legend(loc="lower right")
+    fig1.legend()
+    fig2.legend()
     plt.show()
 
-temperatures = [0.01, 0.1, 1, 10]
+temperatures = [0.1]
 
-plot_softmax(temperatures, arms, time_steps, runs, trueQ)
+plot_softmax(temperatures, arms_large, time_steps_large, runs, trueQ_large)

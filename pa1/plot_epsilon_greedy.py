@@ -15,11 +15,10 @@ def plot_epsilon_greedy(epsilons, arms, time_steps, runs, trueQ):
         fig1.plot(range(time_steps), reward, colors[i], label = "epsilon = " + str(epsilon))
         fig2.plot(range(time_steps), opt_percent, colors[i], label = "epsilon = " + str(epsilon))
 
-
-    fig1.legend(loc="lower right")
-    fig2.legend(loc="lower right")
+    fig1.legend()
+    fig2.legend()
     plt.show()
 
 epsilons = [0, 0.01, 0.1]
 
-plot_epsilon_greedy(epsilons, arms, time_steps, runs, trueQ)
+plot_epsilon_greedy(epsilons, arms_large, time_steps_large, runs, trueQ_large)

@@ -16,13 +16,13 @@ def plot_ucb1(epsilon, temperature, arms, time_steps, runs, trueQ):
     colors = ["green", "red", "blue"]
 
     reward_egreedy, opt_percent_egreedy = epsilon_greedy(epsilon, arms, time_steps, runs, trueQ)
-
+    print(1)
     fig1.plot(range(time_steps), reward_egreedy, colors[0], label = "epsilon greedy")
     fig2.plot(range(time_steps), opt_percent_egreedy, colors[0], label = "epsilon greedy")
 
 
     reward_softmax, opt_percent_softmax = softmax(temperature, arms, time_steps, runs, trueQ)
-
+    print(2)
     fig1.plot(range(time_steps), reward_softmax, colors[1], label = "softmax")
     fig2.plot(range(time_steps), opt_percent_softmax, colors[1], label = "softmax")
 
@@ -36,4 +36,5 @@ def plot_ucb1(epsilon, temperature, arms, time_steps, runs, trueQ):
     fig2.legend(loc="lower right")
     plt.show()
 
-plot_ucb1(epsilon, temperature, arms, time_steps, runs, trueQ)
+if __name__ == "__main__":
+    plot_ucb1(epsilon, temperature, arms, time_steps, runs, trueQ)
