@@ -1,0 +1,342 @@
+  
+\documentclass[english]{article}
+\usepackage[T1]{fontenc}
+\usepackage[latin9]{inputenc}
+\usepackage{float}
+\usepackage[a4paper]{geometry}
+\usepackage{amsmath}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\geometry{verbose,tmargin=2cm,bmargin=2cm,lmargin=2cm,rmargin=2cm}
+\usepackage{graphicx}
+\usepackage[table]{xcolor}
+\usepackage{color}
+
+\title{\textbf{CS6700 : Reinforcement Learning } \\ Programming Assignment 3 \\ Report}
+
+\author{Rahul V \\ ME16B171}
+
+\begin{document}
+
+\maketitle
+
+\section{SMDP Q-Learning}
+SMDP Q-Learning and Intra option Q-Learning are implemented on four-room gridworld. Both the algorithms are trained for 1000 episodes and the results are averaged over 50 independent runs for both goals $G_{1}$ and $G_{2}$ and for both starting conditions(random state in room-1 and fixed state in room-4). $\epsilon$ - greedy policy with an $\epsilon = 0.1$ and a $learning\_rate(\alpha)$ of $0.25$ arae used while training in all runs.\\
+Since for any state in a room, the agent can only choose from 4 primitive actions($Up, Right, Down, Left$) + 2 options available in that room, We can generalize the option space for each state into 6 options (4 primitive actions + 2 hallway options). In the Implementation, these options are numbered as (0-3) for primitive actions(in the order \{$Up, Right, Down, Left$\}), 4 for $Clockwise\,hallway\,option$(Option that leads to hallway which is in clockwise direction to the agent at the current state) and 5 for $AntiClockwise\,hallway\,option$
+\subsection{Learned Value functions with SMDP Q-Learning}
+The values of a state($V$) or state-option pair($Q$) are visualised by drawing a circle in the state grid. The value is proportional to the radius of the circle and is equal to 1 if the circle just touches the square.
+\subsubsection{Goal- $G_{1}$ with Random start state in room-1}
+\begin{figure}[H]
+\minipage{0.5\textwidth}
+  \includegraphics[width=\linewidth]{Q1/plots/SMDPQ_G1_option_Up.png}
+\endminipage\hfill
+\minipage{0.5\textwidth}
+  \includegraphics[width=\linewidth]{Q1/plots/SMDPQ_G1_option_Right.png}
+\endminipage\hfill
+\caption{Q-Values for $G_{1}$ with random start state for option a)Up, b)Right.}   
+\end{figure}
+\begin{figure}[H]
+\minipage{0.5\textwidth}
+  \includegraphics[width=\linewidth]{Q1/plots/SMDPQ_G1_option_Down.png}
+\endminipage\hfill
+\minipage{0.5\textwidth}
+  \includegraphics[width=\linewidth]{Q1/plots/SMDPQ_G1_option_Left.png}
+\endminipage\hfill
+\minipage{0.5\textwidth}
+  \includegraphics[width=\linewidth]{Q1/plots/SMDPQ_G1_option_Clockwise.png}
+\endminipage\hfill
+\minipage{0.5\textwidth}
+  \includegraphics[width=\linewidth]{Q1/plots/SMDPQ_G1_option_Anti-Clockwise.png}
+\endminipage\hfill
+\caption{Q-Values for $G_{1}$ with random start state for option a)Down, b)Left, c)Clockwise, d)Anti Clockwise.}   
+\end{figure}
+\begin{figure}[H]
+\minipage{0.5\textwidth}
+  \includegraphics[width=\linewidth]{Q1/plots/SMDPQ_G1.png}
+\endminipage\hfill
+\minipage{0.5\textwidth}
+  \includegraphics[width=\linewidth]{Q1/plots/SMDPQ_policy_G1.png}
+\endminipage\hfill
+\caption{a)Value Function Plot b)Learnt Policy(x - not explored; (0-5) option as explained above) for Goal - $G_{1}$ which is marked as green with random starting state}   
+\end{figure}
+
+\subsubsection{Goal- $G_{2}$ with Random start state in room-1}
+\begin{figure}[H]
+\minipage{0.5\textwidth}
+  \includegraphics[width=\linewidth]{Q1/plots/SMDPQ_G2_option_Up.png}
+\endminipage\hfill
+\minipage{0.5\textwidth}
+  \includegraphics[width=\linewidth]{Q1/plots/SMDPQ_G2_option_Right.png}
+\endminipage\hfill
+\minipage{0.5\textwidth}
+  \includegraphics[width=\linewidth]{Q1/plots/SMDPQ_G2_option_Down.png}
+\endminipage\hfill
+\minipage{0.5\textwidth}
+  \includegraphics[width=\linewidth]{Q1/plots/SMDPQ_G2_option_Left.png}
+\endminipage\hfill
+\minipage{0.5\textwidth}
+  \includegraphics[width=\linewidth]{Q1/plots/SMDPQ_G2_option_Clockwise.png}
+\endminipage\hfill
+\minipage{0.5\textwidth}
+  \includegraphics[width=\linewidth]{Q1/plots/SMDPQ_G2_option_Anti-Clockwise.png}
+\endminipage\hfill
+\caption{Q-Values for $G_{2}$ with random start state for option a)Up, b)Right, c)Down, d)Left, e)Clockwise, f)Anti Clockwise.}   
+\end{figure}
+\begin{figure}[H]
+\minipage{0.5\textwidth}
+  \includegraphics[width=\linewidth]{Q1/plots/SMDPQ_G2.png}
+\endminipage\hfill
+\minipage{0.5\textwidth}
+  \includegraphics[width=\linewidth]{Q1/plots/SMDPQ_policy_G2.png}
+\endminipage\hfill
+\caption{a)Value Function Plot b)Learnt Policy(x - not explored; (0-5) option as explained above) for Goal - $G_{2}$ which is marked as green with random starting state}   
+\end{figure}
+
+\subsubsection{Goal- $G_{1}$ with Fixed start state in room-4}
+\begin{figure}[H]
+\minipage{0.5\textwidth}
+  \includegraphics[width=\linewidth]{Q1/plots/SMDPQ_fixed_start_G1_option_Up.png}
+\endminipage\hfill
+\minipage{0.5\textwidth}
+  \includegraphics[width=\linewidth]{Q1/plots/SMDPQ_fixed_start_G1_option_Right.png}
+\endminipage\hfill
+\minipage{0.5\textwidth}
+  \includegraphics[width=\linewidth]{Q1/plots/SMDPQ_fixed_start_G1_option_Down.png}
+\endminipage\hfill
+\minipage{0.5\textwidth}
+  \includegraphics[width=\linewidth]{Q1/plots/SMDPQ_fixed_start_G1_option_Left.png}
+\endminipage\hfill
+\caption{Q-Values for $G_{1}$ with fixed start state for option a)Up, b)Right, c)Down, d)Left}   
+
+\end{figure}
+\begin{figure}[H]
+\minipage{0.5\textwidth}
+  \includegraphics[width=\linewidth]{Q1/plots/SMDPQ_fixed_start_G1_option_Clockwise.png}
+\endminipage\hfill
+\minipage{0.5\textwidth}
+  \includegraphics[width=\linewidth]{Q1/plots/SMDPQ_fixed_start_G1_option_Anti-Clockwise.png}
+\endminipage\hfill
+\caption{Q-Values for $G_{1}$ with fixed start state for option a)Clockwise, b)Anti Clockwise.}
+\end{figure}
+
+\begin{figure}[H]
+\minipage{0.5\textwidth}
+  \includegraphics[width=\linewidth]{Q1/plots/SMDPQ_fixed_start_G1.png}
+\endminipage\hfill
+\minipage{0.5\textwidth}
+  \includegraphics[width=\linewidth]{Q1/plots/SMDPQ_policy_fixed_start_G1.png}
+\endminipage\hfill
+\caption{a)Value Function Plot b)Learnt Policy(x - not explored; (0-5) option as explained above) for Goal - $G_{1}$ which is marked as green with fixed     starting state.}   
+\end{figure}
+
+\subsubsection{Goal- $G_{2}$ with Fixed start state in room-4}
+\begin{figure}[H]
+\minipage{0.5\textwidth}
+  \includegraphics[width=\linewidth]{Q1/plots/SMDPQ_fixed_start_G2_option_Up.png}
+\endminipage\hfill
+\minipage{0.5\textwidth}
+  \includegraphics[width=\linewidth]{Q1/plots/SMDPQ_fixed_start_G2_option_Right.png}
+\endminipage\hfill
+\caption{Q-Values for $G_{2}$ with fixed start state for option a)Up, b)Right.}   
+\end{figure}
+\begin{figure}[H]
+\minipage{0.5\textwidth}
+  \includegraphics[width=\linewidth]{Q1/plots/SMDPQ_fixed_start_G2_option_Down.png}
+\endminipage\hfill
+\minipage{0.5\textwidth}
+  \includegraphics[width=\linewidth]{Q1/plots/SMDPQ_fixed_start_G2_option_Left.png}
+\endminipage\hfill
+\minipage{0.5\textwidth}
+  \includegraphics[width=\linewidth]{Q1/plots/SMDPQ_fixed_start_G2_option_Clockwise.png}
+\endminipage\hfill
+\minipage{0.5\textwidth}
+  \includegraphics[width=\linewidth]{Q1/plots/SMDPQ_fixed_start_G2_option_Anti-Clockwise.png}
+\endminipage\hfill
+\caption{Q-Values for $G_{2}$ with fixed start state for option a)Down, b)Left, c)Clockwise, d)Anti Clockwise.}   
+\end{figure}
+\begin{figure}[H]
+\minipage{0.5\textwidth}
+  \includegraphics[width=\linewidth]{Q1/plots/SMDPQ_fixed_start_G2.png}
+\endminipage\hfill
+\minipage{0.5\textwidth}
+  \includegraphics[width=\linewidth]{Q1/plots/SMDPQ_policy_fixed_start_G2.png}
+\endminipage\hfill
+\caption{a)Value Function Plot b)Learnt Policy(x - not explored; (0-5) option as explained above) for Goal - $G_{2}$ which is marked as green with fixed starting state}   
+\end{figure}
+
+\subsection{Learnt Value functions with Intra Option Q-Learning}
+\subsubsection{Goal- $G_{1}$ with Random start state in room-1}
+
+\begin{figure}[H]
+\minipage{0.5\textwidth}
+  \includegraphics[width=\linewidth]{Q1/plots/intra_option_G1.png}
+\endminipage\hfill
+\minipage{0.5\textwidth}
+  \includegraphics[width=\linewidth]{Q1/plots/intra_option_policy_G1.png}
+\endminipage\hfill
+\caption{a)Value Function Plot b)Learnt Policy(x - not explored; (0-5) option as explained above) for Goal - $G_{1}$ which is marked as green with random starting state}   
+\end{figure}
+\subsubsection{Goal- $G_{2}$ with Random start state in room-1}
+
+\begin{figure}[H]
+\minipage{0.5\textwidth}
+  \includegraphics[width=\linewidth]{Q1/plots/intra_option_G2.png}
+\endminipage\hfill
+\minipage{0.5\textwidth}
+  \includegraphics[width=\linewidth]{Q1/plots/intra_option_policy_G2.png}
+\endminipage\hfill
+\caption{a)Value Function Plot b)Learnt Policy(x - not explored; (0-5) option as explained above) for Goal - $G_{2}$ which is marked as green with random starting state}   
+\end{figure}
+\subsubsection{Goal- $G_{1}$ with Fixed start state in room-4}
+\begin{figure}[H]
+\minipage{0.5\textwidth}
+  \includegraphics[width=\linewidth]{Q1/plots/intra_option_fixed_start_G1.png}
+\endminipage\hfill
+\minipage{0.5\textwidth}
+  \includegraphics[width=\linewidth]{Q1/plots/intra_option_policy_fixed_start_G1.png}
+\endminipage\hfill
+\caption{a)Value Function Plot b)Learnt Policy(x - not explored; (0-5) option as explained above) for Goal - $G_{1}$ which is marked as green with fixed starting state}   
+\end{figure}
+\subsubsection{Goal- $G_{2}$ with Fixed start state in room-4}
+\begin{figure}[H]
+\minipage{0.5\textwidth}
+  \includegraphics[width=\linewidth]{Q1/plots/intra_option_fixed_start_G2.png}
+\endminipage\hfill
+\minipage{0.5\textwidth}
+  \includegraphics[width=\linewidth]{Q1/plots/intra_option_policy_fixed_start_G2.png}
+\endminipage\hfill
+\caption{a)Value Function Plot b)Learnt Policy(x - not explored; (0-5) option as explained above) for Goal - $G_{2}$ which is marked as green with fixed starting state}   
+\end{figure}
+
+\subsection{Learning Curves and Observations}
+\begin{figure}[H]
+\minipage{0.5\textwidth}
+  \includegraphics[width=\linewidth]{Q1/plots/steps_G1.png}
+\endminipage\hfill
+\minipage{0.5\textwidth}
+  \includegraphics[width=\linewidth]{Q1/plots/steps_G2.png}
+\endminipage\hfill
+\caption{Plot Comparing Average steps taken by the agent with different starting conditions and learning algorithms for goal a)$G_{1}$ b)$G_{2}$ with epsiodes(x-axis)   in log scale.}   
+\end{figure}
+
+\begin{itemize}
+\item In SMDP Q-Learning by changing the start state to fixed position in room-4, the number steps required for both the goals decreased on an average. This is because the start state in room-4 is nearer for $G_{2}$. And for $G_{1}$ it could be because random start state in room-1 could lead to near wall starting states that the agent might keep bumping into. 
+
+\item For $G_{1}$ using SMDP Q-Learning other than the starting room all the other rooms are explored very little which is evident from the Q-values visualised. This is because the goal state is a hallway state which the agent can reach easily with the help of a hallway option. 
+
+\item Even though $G_{2}$ is not a hallway state, the above analogy applies as only the starting state room and goal state room are explored to some extent. Since the $G_{2}$ is not a hallway state on an average the agent took longer to reach it.
+
+\item Using intra-option Q-Learning improved the agent's ability to learn the Q-values for more state-option pairs accurately compared to SMDP Q-Learning in the same number of episodes.
+
+\item From the average steps plot we can observe that Intra Option Q-Learning initialy(first 10 steps) takes more steps than SMDP Q-Learning for all goals and starting conditions as it explores the environment better. And after about 50 episodes it converges to its optimal behaviour which is only slightly better than SMDP Q-Learning's optimal behaviour but it learns the Q-values much better and faster than SMDP Q-Learning.
+
+\end{itemize}
+
+
+
+% #####################################################################
+
+\pagebreak
+
+\section{Deep RL}
+\subsection{Implementation Details}
+Implementation of DQN algorithm was completed using the base code provided. The best set of hyperparameters obtained by trying out different sets is reported in the next subsection. Adam Optimizer is used to train the Q-network. For exploration $\epsilon$ - greedy policy is used with decaying $\epsilon$ over time to exploit the environment after training for sometime.
+\subsection{Results and Best Hyperparameter Values}
+
+\begin{figure}[H]
+\minipage{0.5\textwidth}
+ \includegraphics[width=\linewidth]{Q2/plots/learning_curve_best.png}
+ \label{fig: DQN Learning Curve}
+\endminipage\hfill
+\minipage{0.5\textwidth}
+ \includegraphics[width=\linewidth]{Q2/plots/test_plot.png}
+ \label{fig: DQN Learning Curve}
+\endminipage\hfill 
+ \caption{a)Learning Curve for DQN on CartPole-v0 environment averaged over 4 independent runs(different seeds) trained for 500 episodes. b) Test rewards obtained by the learnt agent over 20 episodes.}
+\end{figure}
+
+From the above Learning Curve we can say that on an average the agent "solved" CartPole-v0 with the implemented DQN algorithm for the set of hyperparameter values mentioned in the table below. The agent is also getting reward of 200 for all the episodes and over all runs while testing. 
+
+\begin{table}[h!]
+  \begin{center}
+    \label{tab:table1}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        \rowcolor{lightgray}
+        \textbf{Hyperparameter} & \textbf{Value} & \textbf{Description}\\
+        \hline
+        REPLAY\_MEMORY\_SIZE & $10^{5}$	& number of tuples in experience replay \\  
+        EPSILON\_START & $1$	& initial epsilon of epsilon-greedy exploration\\
+        EPSILON\_DECAY & $0.995$ & decay multiplier for epsilon\\
+        EPSILON\_MIN & $0.001$ & minimum value of epsilon\\
+        HIDDEN1\_SIZE & $20$ & size of hidden layer 1\\
+        HIDDEN2\_SIZE & $20$ & size of hidden layer 2\\
+        HIDDEN3\_SIZE & $20$ & size of hidden layer 3\\
+        EPISODES\_NUM & $500$ & number of episodes to train on.\\
+        MAX\_STEPS & $200$ & maximum number of steps in an episode\\ 
+        LEARNING\_RATE & $0.001$ & learning rate for SGD Optimizer\\
+        MINIBATCH\_SIZE & $32$ & size of minibatch sampled from the experience replay\\
+        DISCOUNT\_FACTOR & $0.999$ & MDP's gamma\\
+        TARGET\_UPDATE\_FREQ & $100$ & number of steps (not episodes) after which to update the target networks\\ 
+        \hline
+    \end{tabular}
+  \end{center}
+  \caption{Final set of Hyperparameters which worked best for the DQN.}
+\end{table}
+
+\subsection{Observations}
+\begin{figure}[H]
+\minipage{0.5\textwidth}
+ \includegraphics[width=\linewidth]{Q2/plots/mini_batch_size.png}
+ \label{fig: DQN Learning Curve with varying mini batch size}
+\endminipage\hfill
+\minipage{0.5\textwidth}
+ \includegraphics[width=\linewidth]{Q2/plots/learning_rate.png}
+ \label{fig: DQN Learning Curve with varying learning rate}
+\endminipage\hfill 
+\minipage{0.5\textwidth}
+ \includegraphics[width=\linewidth]{Q2/plots/start_epsilion.png}
+ \label{fig: DQN Learning Curve with varying starting epsilon}
+\endminipage\hfill
+\minipage{0.5\textwidth}
+ \includegraphics[width=\linewidth]{Q2/plots/replay_memory_size.png}
+ \label{fig: DQN Learning Curve}
+\endminipage\hfill
+ \caption{a)Learning Curve for DQN on CartPole-v0 environment trained for 500 episodes with varying a) Mini Batch Size, b) Learning Rate c) Starting Epsilon d) Replay Memory size}
+\end{figure}
+
+\begin{itemize}
+
+\item From above figure (a) we can see that mini batch size of 32 works best amoung the 4 sizes. Higher batch sizes like 64 and 128 though can learner quicker are unstable as they are prone to pick bad tuples and hinder the learning process and lower batch sizes are slow to learn the policy. So, a batch size in between is optimal.
+
+\item From above figure (b) we can see that high learning rate like 0.01 causes unstablity in the learning process and low learning rate like 0.0001 causes the agent to learn very slowly, So, a learning rate of 0.001 is chosen which from the graph seems to solve the problem.
+
+\item From above figure (c) we can see that higher starting epsilon is working better than lower starting epsilon. This is because higher starting epsilon allows the agent to explore more initially and learn the optimal policy which it can later exploit as the epsilon is decayed exponentially with a decay rate.    
+
+\item From above figure (d) We can see that higher replay memory sizes are more stable as replay memory with less size will cause the sampled mini batch to contain correlated and bad tuples which hinders the learning process.
+
+\item Lower epsilon decay multiplier will result in sub optimal policies as the exploration stops earlier and the agent hasn't explored enough.
+
+\end{itemize}
+
+
+\subsection{Removal of Target Network and Experience Replay}
+\begin{figure}[H]
+\minipage{0.32\textwidth}
+ \includegraphics[width=\linewidth]{Q2/plots/learning_curve_without_target.png}
+ \label{fig: DQN Learning Curve without target network}
+\endminipage\hfill
+\minipage{0.32\textwidth}
+ \includegraphics[width=\linewidth]{Q2/plots/learning_curve_without_replay.png}
+ \label{fig: DQN Learning Curve without replay memory.}
+\endminipage\hfill 
+\minipage{0.32\textwidth}
+ \includegraphics[width=\linewidth]{Q2/plots/learning_curve_without_replay_and_target.png}
+ \label{fig: DQN Learning Curve without replay memory and target network}
+\endminipage\hfill
+ \caption{Learning Curve for DQN on CartPole-v0 environment a)without target network b) without replay memory, c) without both replay memory and target network  averaged over 4 independent runs trained for 500 episodes.}
+\end{figure}
+
+From the above plots we can see that the agent doesn't learn anything at all when trained without replay memory for the fixed hyperparameters might be because all the samples that it encountered are bad and highly correlated and it can only learn from one sample at a time. So, the gradients might be too small for it to learn anything.
+\\In the case where only target network is removed, the learning process is highly unstable as the agent is chasing non-stationary targets. So, we can see a lot of sharp ups and downs in the reward curve. This is called as "Catastrophic Forgetting", which means the agent which was doing well till now suddenly starts performing bad and the rewards reduce steeply.
+\\ From this we can see that Replay memory is much more useful compared to Target network.
+\end{document}
